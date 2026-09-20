@@ -1,4 +1,4 @@
-# RadioTunes for Kodi — v0.9.0
+# RadioTunes for Kodi — v1.0.0
 
 Unofficial community RadioTunes / AudioAddict music add-on for Kodi.
 
