@@ -1,6 +1,6 @@
 # Kodi publication checklist
 
-## Current status for v0.9.0 test build
+## Ready for v1.0.0 publication
 
 - [x] Python 3 add-on
 - [x] V1 feature scope frozen around linear playback
@@ -21,22 +21,23 @@
 - [x] no direct Kodi database access
 - [x] no forced skin view
 - [x] original community artwork used instead of the official RadioTunes logo
+- [x] `LICENSE.txt` present at repository root
+- [x] `LICENSE.txt` present inside `plugin.audio.radiotunes/`
+- [x] Kodi addon-checker passes
+- [x] basic functional test completed on Kodi
+- [x] version bumped to 1.0.0
+- [x] `strings.po` metadata updated to 1.0.0
+- [x] `<news>` updated for the public release
 
-## Before public submission
+## Before submitting the PR
 
-- [ ] keep `LICENSE.txt` at repository root
-- [ ] copy the same `LICENSE.txt` into `plugin.audio.radiotunes/`
-- [ ] validate the v0.9.0 build on Kodi
-- [ ] test several stations and dynamic Now Playing updates
-- [ ] test add/remove favourites
-- [ ] test behaviour after stopping and restarting playback
-- [ ] inspect `kodi.log` for unexpected errors
-- [ ] bump version to 1.0.0 for submission
-- [ ] update `strings.po` Project-Id-Version to 1.0.0
-- [ ] update `<news>` for the 1.0.0 public release
-- [ ] run the official Kodi addon-checker against the final source tree
 - [ ] perform one final clean-install test from the release ZIP
-- [ ] submit to the appropriate official Kodi repository branch
+- [ ] verify `git status` is clean
+- [ ] verify no `__pycache__`, `.pyc`, or ZIP files are included
+- [ ] copy `plugin.audio.radiotunes/` into the Kodi `repo-plugins` fork
+- [ ] create one submission commit:
+      `[plugin.audio.radiotunes] v1.0.0`
+- [ ] open PR against `xbmc/repo-plugins:omega`
 
 ## Deferred robustness work
 

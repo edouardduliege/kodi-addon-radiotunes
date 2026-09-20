@@ -19,7 +19,7 @@
     <license>GPL-3.0-or-later</license>
     <source>https://github.com/edouardduliege/kodi-addon-radiotunes</source>
     <website>https://www.radiotunes.com/</website>
-    <news>v0.9.0 - Pre-release test build. Linear RadioTunes playback, favourites, Premium quality selection, dynamic Now Playing metadata, session reuse, robust stream fallback and English/French localisation.</news>
+    <news>v1.0.0 - Initial public release. Linear RadioTunes playback, favourites, Premium quality selection, dynamic Now Playing metadata, session reuse, robust stream fallback, stale-lock recovery and English/French localisation.</news>
     <assets>
       <icon>resources/icon.png</icon>
       <fanart>resources/fanart.jpg</fanart>
