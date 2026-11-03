@@ -1,49 +1,57 @@
-# Kodi publication checklist
+# RadioTunes — Kodi publication checklist
 
-## Current status for v0.9.0 test build
+## Release status — v1.0.2
 
-- [x] Python 3 add-on
-- [x] V1 feature scope frozen around linear playback
-- [x] native Kodi player UI only
-- [x] icon and fanart declared in `addon.xml`
-- [x] English and French localisation
-- [x] API/network errors presented to users are localised
-- [x] add-on state stored in its own Kodi profile directory
-- [x] atomic playback-state writes
-- [x] kernel-managed playback-state locking
-- [x] session cache tied to the configured credentials
-- [x] root menu requires configured credentials
-- [x] session re-login logic on HTTP 401/403
-- [x] stream fallback uses lightweight streamed `GET` probes
-- [x] no blind fallback to the first PLS server
-- [x] no compiled Python files included
-- [x] no analytics
-- [x] no direct Kodi database access
-- [x] no forced skin view
-- [x] original community artwork used instead of the official RadioTunes logo
+This checklist tracks the RadioTunes v1.0.2 maintenance release. Checked implementation items reflect the work carried forward from earlier versions and the v1.0.2 candidate; they are not a substitute for the final source review or on-device release tests.
 
-## Before public submission
+### Implementation and packaging
 
-- [ ] keep `LICENSE.txt` at repository root
-- [ ] copy the same `LICENSE.txt` into `plugin.audio.radiotunes/`
-- [ ] validate the v0.9.0 build on Kodi
-- [ ] test several stations and dynamic Now Playing updates
-- [ ] test add/remove favourites
-- [ ] test behaviour after stopping and restarting playback
-- [ ] inspect `kodi.log` for unexpected errors
-- [ ] bump version to 1.0.0 for submission
-- [ ] update `strings.po` Project-Id-Version to 1.0.0
-- [ ] update `<news>` for the 1.0.0 public release
-- [ ] run the official Kodi addon-checker against the final source tree
-- [ ] perform one final clean-install test from the release ZIP
-- [ ] submit to the appropriate official Kodi repository branch
+- [x] Python 3 add-on; V1 scope remains focused on linear playback
+- [x] Native Kodi player controls only; no direct Kodi database access or forced skin view
+- [x] Original community artwork, with icon and fanart declared in `addon.xml`
+- [x] English and French localisation, including user-facing API/network errors
+- [x] Add-on state stored in its Kodi profile directory
+- [x] Atomic playback-state writes and kernel-managed locking
+- [x] Cross-platform state-file locking: `msvcrt.locking()` on Windows, `fcntl.flock()` on Unix-like systems
+- [x] Playback-instance identification to reduce stale Now Playing metadata after restarts
+- [x] Credential-specific session cache and re-authentication on HTTP 401/403
+- [x] Root menu requires configured credentials
+- [x] Authenticated HTTP requests do not automatically follow redirects that could expose credentials or session keys
+- [x] Playlist destination validation and bounded streamed `GET` probing with stream fallback
+- [x] No blind fallback to the first PLS server
+- [x] Defensive normalisation of favourite/channel IDs to strings, including `list_favorites()`
+- [x] Audio playback starts without waiting unnecessarily for track metadata enrichment
+- [x] Retry handling for transient `/tracks/{id}` metadata failures
+- [x] Useful logging for current-track / track-detail lookup failures without exposing secrets
+- [x] No analytics
 
-## Deferred robustness work
+### Final v1.0.2 publication checks
 
-- [ ] explicitly test stream redirects against `Kodi.Player().getPlayingFile()`
-- [ ] reduce worst-case stream-probe latency during CDN/network outages
-- [x] add useful debug logging for swallowed `current_track()` API errors
-- [ ] normalise favourite/channel IDs defensively
-- [ ] evaluate starting audio before the initial metadata lookup
-- [ ] test graceful recovery after temporary network loss
-- [ ] simplify Kodi entry points by moving more logic into `resources/lib/`
+- [ ] Confirm that `addon.xml` declares `version="1.0.2"` and no longer refers to a `v0.9 test build`
+- [ ] Confirm both `strings.po` `Project-Id-Version` headers refer to v1.0.2
+- [ ] Confirm `<news>` accurately describes changes in v1.0.2
+- [ ] Confirm Kodi platform metadata matches supported operating systems (no obsolete Linux-only restriction)
+- [ ] Verify that `LICENSE.txt` exists both at the source-repository root and inside `plugin.audio.radiotunes/`
+- [ ] Verify the official package excludes `PUBLICATION_CHECKLIST.md`, README/development files, `.git`, `__pycache__` and `.pyc`
+- [ ] Run `git diff --check` and review the final source diff
+- [ ] Run the official Kodi addon-checker on the final add-on directory
+- [ ] Test a clean installation of the final v1.0.2 package on Kodi
+- [ ] Test several stations and dynamic Now Playing metadata
+- [ ] Test adding/removing favourites, including integer/string channel-ID cases and contextual **Remove from favourites**
+- [ ] Test stopping/restarting the same stream and rapidly changing streams (no stale metadata)
+- [ ] Test stream fallback and handling of temporarily unavailable stations
+- [ ] Inspect `kodi.log` for unexpected errors or leaked credentials / signed URLs
+- [x] Confirm that the current v1.0.2 candidate works in Kodi (user-reported; not a clean-install release test)
+- [ ] Commit and push the source release to the RadioTunes repository
+- [ ] Open a dedicated v1.0.2 PR against `xbmc/repo-plugins` `omega`, based on the current upstream branch
+- [ ] Verify the PR's automated checks and address reviewer comments
+
+### Deferred work — after v1.0.2
+
+- [ ] Validate authentication JSON type before calling `.get()`: non-dictionary JSON (`null`, `[]`, strings, etc.) must raise an explicit `AudioAddictError`; test `null`, `[]`, and `{}` while preserving required-field checks
+- [ ] Explicitly test redirected playback URLs against `Kodi.Player().getPlayingFile()`, including CDN redirects and service metadata updates
+- [ ] Test recovery after temporary network loss and long CDN timeouts; evaluate worst-case probe latency
+- [ ] Evaluate dynamic changes to configured credentials while the background service is running (not required for v1.0.2)
+- [ ] Consider entry-point simplification only if justified by an actual maintenance need; avoid unrelated refactoring
+
+**Repository rule:** Keep this checklist at the RadioTunes source-repository root. Never include it in the official `plugin.audio.radiotunes/` package or Kodi PR.
